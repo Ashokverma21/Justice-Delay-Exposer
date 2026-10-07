@@ -1,0 +1,533 @@
+{
+ "n_rows": 905261,
+ "n_train": 724209,
+ "n_test": 181052,
+ "configs": {
+  "A0 filing-time, no act": {
+   "r2_log": 0.665935107600199,
+   "r2_days": 0.4740544294613457,
+   "mae_days": 236.54406281310432,
+   "bucket_acc_3class": 0.6762808474913284,
+   "over_1yr_acc": 0.7999414532841393,
+   "over_1yr_baseline": 0.6287972516183196,
+   "over_1yr_auc": 0.8858392256432484,
+   "iters": 1899
+  },
+  "A1 filing-time + act/section": {
+   "r2_log": 0.7092056095519284,
+   "r2_days": 0.5007426292708429,
+   "mae_days": 229.08516673751652,
+   "bucket_acc_3class": 0.6898957205664671,
+   "over_1yr_acc": 0.8064589178799461,
+   "over_1yr_baseline": 0.6287972516183196,
+   "over_1yr_auc": 0.8941138943778328,
+   "iters": 1858
+  },
+  "B0 + purpose bucket, no act": {
+   "r2_log": 0.724749982695573,
+   "r2_days": 0.5286596848786553,
+   "mae_days": 222.11019540878473,
+   "bucket_acc_3class": 0.706421359609394,
+   "over_1yr_acc": 0.8193778582948545,
+   "over_1yr_baseline": 0.6287972516183196,
+   "over_1yr_auc": 0.9023656097929296,
+   "iters": 2748
+  },
+  "B1 + purpose bucket + act/section": {
+   "r2_log": 0.7536687544408054,
+   "r2_days": 0.546337473489126,
+   "mae_days": 216.57190564932037,
+   "bucket_acc_3class": 0.7135021982634823,
+   "over_1yr_acc": 0.822581357841946,
+   "over_1yr_baseline": 0.6287972516183196,
+   "over_1yr_auc": 0.9080276713075214,
+   "iters": 3710
+  }
+ },
+ "pickle_check_max_abs_diff": 0.0,
+ "importance_filing_time_model": {
+  "type_raw": 0.18592,
+  "court_year": 0.10432,
+  "act_sec": 0.09737,
+  "court_act": 0.08829,
+  "dist_type_year": 0.07643,
+  "filing_year": 0.05703,
+  "court_type": 0.0356,
+  "filing_month": 0.01757,
+  "dist_year": 0.01436,
+  "female_adv_def": 0.01228,
+  "pos": 0.01166,
+  "dist_type": 0.00942,
+  "state_act": 0.00898,
+  "court_id": 0.00851,
+  "dist_act": 0.00849,
+  "female_adv_pet": 0.00768,
+  "act": 0.00755,
+  "type_bucket": 0.00681,
+  "state_code": 0.00666,
+  "f_pet": 0.00611
+ },
+ "state_r2_filing_time": {
+  "Assam": 0.636,
+  "Bihar": 0.74,
+  "Delhi": 0.556,
+  "Gujarat": 0.698,
+  "Haryana": 0.659,
+  "Karnataka": 0.642,
+  "Kerala": 0.54,
+  "Madhya Pradesh": 0.743,
+  "Maharashtra": 0.642,
+  "Odisha": 0.774,
+  "Punjab": 0.687,
+  "Rajasthan": 0.77,
+  "Tamil Nadu": 0.816,
+  "Uttar Pradesh": 0.698,
+  "West Bengal": 0.755
+ },
+ "state_n_test": {
+  "Karnataka": 14325,
+  "Punjab": 14209,
+  "Haryana": 14063,
+  "Gujarat": 13963,
+  "Madhya Pradesh": 13320,
+  "Assam": 13215,
+  "Kerala": 12754,
+  "Tamil Nadu": 12587,
+  "Delhi": 12145,
+  "Maharashtra": 12115,
+  "Rajasthan": 11728,
+  "Uttar Pradesh": 10769,
+  "West Bengal": 10204,
+  "Odisha": 8233,
+  "Bihar": 7422
+ },
+ "vacancy_whole_case": {
+  "no_vacancy": {
+   "n": 198682,
+   "mean": 247.2,
+   "median": 60.0
+  },
+  "vacancy": {
+   "n": 19148,
+   "mean": 680.0,
+   "median": 541.0
+  }
+ },
+ "vacancy_calendar180": {
+  "no_vacancy": {
+   "n": 190101,
+   "mean": 307.1,
+   "median": 106.0
+  },
+  "vacancy": {
+   "n": 14352,
+   "mean": 337.8,
+   "median": 148.0
+  }
+ },
+ "roster_match_pct": 33.8,
+ "lok_disposal": {
+  "other": {
+   "n": 851706,
+   "mean": 429.5,
+   "median": 188.0
+  },
+  "lok": {
+   "n": 53555,
+   "mean": 403.6,
+   "median": 185.0
+  }
+ },
+ "lok_purpose": {
+  "other": {
+   "n": 885605,
+   "mean": 431.1,
+   "median": 190.0
+  },
+  "lok": {
+   "n": 19656,
+   "mean": 286.5,
+   "median": 96.0
+  }
+ },
+ "lok_by_state": {
+  "Assam": {
+   "n_lok": 8015,
+   "med_lok": 122.0,
+   "med_other": 224.0
+  },
+  "Bihar": {
+   "n_lok": 578,
+   "med_lok": 908.0,
+   "med_other": 126.0
+  },
+  "Delhi": {
+   "n_lok": 2867,
+   "med_lok": 190.0,
+   "med_other": 183.0
+  },
+  "Gujarat": {
+   "n_lok": 7886,
+   "med_lok": 272.0,
+   "med_other": 117.0
+  },
+  "Haryana": {
+   "n_lok": 15,
+   "med_lok": 79.0,
+   "med_other": 193.0
+  },
+  "Karnataka": {
+   "n_lok": 3773,
+   "med_lok": 62.0,
+   "med_other": 82.0
+  },
+  "Kerala": {
+   "n_lok": 1529,
+   "med_lok": 390.0,
+   "med_other": 225.0
+  },
+  "Madhya Pradesh": {
+   "n_lok": 8419,
+   "med_lok": 362.0,
+   "med_other": 112.0
+  },
+  "Maharashtra": {
+   "n_lok": 4613,
+   "med_lok": 224.0,
+   "med_other": 237.0
+  },
+  "Odisha": {
+   "n_lok": 2672,
+   "med_lok": 238.5,
+   "med_other": 484.0
+  },
+  "Punjab": {
+   "n_lok": 5,
+   "med_lok": 310.0,
+   "med_other": 195.0
+  },
+  "Rajasthan": {
+   "n_lok": 480,
+   "med_lok": 301.5,
+   "med_other": 177.0
+  },
+  "Tamil Nadu": {
+   "n_lok": 5373,
+   "med_lok": 178.0,
+   "med_other": 256.0
+  },
+  "Uttar Pradesh": {
+   "n_lok": 5676,
+   "med_lok": 26.0,
+   "med_other": 178.0
+  },
+  "West Bengal": {
+   "n_lok": 1654,
+   "med_lok": 20.0,
+   "med_other": 171.0
+  }
+ },
+ "state_median_days": {
+  "Assam": 206.0,
+  "Bihar": 134.0,
+  "Delhi": 183.0,
+  "Gujarat": 134.0,
+  "Haryana": 193.0,
+  "Karnataka": 80.0,
+  "Kerala": 231.0,
+  "Madhya Pradesh": 156.0,
+  "Maharashtra": 236.0,
+  "Odisha": 459.0,
+  "Punjab": 195.0,
+  "Rajasthan": 178.0,
+  "Tamil Nadu": 245.0,
+  "Uttar Pradesh": 145.0,
+  "West Bengal": 159.0
+ },
+ "state_n": {
+  "Punjab": 71722,
+  "Karnataka": 71186,
+  "Haryana": 70317,
+  "Gujarat": 69798,
+  "Assam": 66615,
+  "Madhya Pradesh": 65857,
+  "Kerala": 64158,
+  "Tamil Nadu": 62474,
+  "Maharashtra": 61175,
+  "Delhi": 60963,
+  "Rajasthan": 58893,
+  "Uttar Pradesh": 53860,
+  "West Bengal": 50689,
+  "Odisha": 40263,
+  "Bihar": 37291
+ },
+ "type_bucket": {
+  "bail": {
+   "n": 59476,
+   "mean": 33.7,
+   "median": 10.0
+  },
+  "motor_accident": {
+   "n": 29618,
+   "mean": 479.4,
+   "median": 283.0
+  },
+  "matrimonial_family": {
+   "n": 21161,
+   "mean": 379.0,
+   "median": 226.0
+  },
+  "execution": {
+   "n": 30731,
+   "mean": 594.0,
+   "median": 429.0
+  },
+  "negotiable_instr": {
+   "n": 9927,
+   "mean": 570.0,
+   "median": 443.0
+  },
+  "traffic_petty": {
+   "n": 60445,
+   "mean": 217.2,
+   "median": 35.0
+  },
+  "criminal": {
+   "n": 343193,
+   "mean": 407.2,
+   "median": 136.0
+  },
+  "civil": {
+   "n": 132500,
+   "mean": 613.4,
+   "median": 422.0
+  },
+  "other": {
+   "n": 218210,
+   "mean": 481.7,
+   "median": 258.0
+  }
+ },
+ "act_coverage_pct": 77.0,
+ "criminal_act": {
+  "0.0": {
+   "n": 438562,
+   "mean": 369.2,
+   "median": 172.0
+  },
+  "1.0": {
+   "n": 258129,
+   "mean": 358.2,
+   "median": 92.0
+  }
+ },
+ "bailable": {
+  "unknown": {
+   "n": 763792,
+   "mean": 436.7,
+   "median": 201.0
+  },
+  "bailable": {
+   "n": 73999,
+   "mean": 414.6,
+   "median": 161.0
+  },
+  "non-bailable": {
+   "n": 56754,
+   "mean": 340.2,
+   "median": 63.0
+  },
+  "n/a": {
+   "n": 5613,
+   "mean": 313.5,
+   "median": 39.0
+  },
+  "depends": {
+   "n": 4859,
+   "mean": 404.5,
+   "median": 137.0
+  },
+  "unclear": {
+   "n": 244,
+   "mean": 599.7,
+   "median": 419.0
+  }
+ },
+ "top_acts": [
+  {
+   "act": 17353,
+   "name": "The Indian Penal Code",
+   "n": 175891,
+   "mean": 425.4,
+   "median": 147.0
+  },
+  {
+   "act": 4759,
+   "name": "Code of Criminal Procedure",
+   "n": 82238,
+   "mean": 214.5,
+   "median": 25.0
+  },
+  {
+   "act": 10581,
+   "name": "Motor Vehicles Act",
+   "n": 47505,
+   "mean": 193.8,
+   "median": 67.0
+  },
+  {
+   "act": 4747,
+   "name": "Code of Civil Procedure",
+   "n": 29839,
+   "mean": 492.1,
+   "median": 352.0
+  },
+  {
+   "act": 11007,
+   "name": "Negotiable Instruments Act",
+   "n": 19596,
+   "mean": 507.0,
+   "median": 389.0
+  },
+  {
+   "act": 4650,
+   "name": "Civil Procedure Code",
+   "n": 12733,
+   "mean": 582.4,
+   "median": 401.0
+  },
+  {
+   "act": 6748,
+   "name": "GUJARAT (BOMBAY) PROHIBITION ACT, 1949",
+   "n": 10222,
+   "mean": 333.4,
+   "median": 106.0
+  },
+  {
+   "act": 7416,
+   "name": "I.P.C(Police)",
+   "n": 10139,
+   "mean": 401.4,
+   "median": 91.0
+  },
+  {
+   "act": 10564,
+   "name": "Motor Vehicle Act",
+   "n": 9746,
+   "mean": 316.2,
+   "median": 94.0
+  },
+  {
+   "act": 7276,
+   "name": "Hindu Marriage Act",
+   "n": 9566,
+   "mean": 371.5,
+   "median": 242.0
+  },
+  {
+   "act": 4763,
+   "name": "CodeofCivilProcedure",
+   "n": 7333,
+   "mean": 577.3,
+   "median": 384.0
+  },
+  {
+   "act": 9846,
+   "name": "MOTOR VEHICLES ACT",
+   "n": 7051,
+   "mean": 274.2,
+   "median": 37.0
+  },
+  {
+   "act": 10598,
+   "name": "MotorVehiclesAct",
+   "n": 6941,
+   "mean": 277.1,
+   "median": 20.0
+  },
+  {
+   "act": 4069,
+   "name": "CODE OF CIVIL PROCEDURE",
+   "n": 6765,
+   "mean": 575.6,
+   "median": 382.0
+  },
+  {
+   "act": 9847,
+   "name": "MOTOR VEHICLES ACT, 1988",
+   "n": 6579,
+   "mean": 339.0,
+   "median": 2.0
+  },
+  {
+   "act": 6260,
+   "name": "Excise Act 1915",
+   "n": 5816,
+   "mean": 33.4,
+   "median": 0.0
+  },
+  {
+   "act": 14451,
+   "name": "Railways Act",
+   "n": 5607,
+   "mean": 42.4,
+   "median": 0.0
+  },
+  {
+   "act": 10809,
+   "name": "NEGOTIABLE INSTRUMENTS ACT, 1881",
+   "n": 5288,
+   "mean": 535.0,
+   "median": 340.5
+  },
+  {
+   "act": 10808,
+   "name": "NEGOTIABLE INSTRUMENTS ACT",
+   "n": 4973,
+   "mean": 597.1,
+   "median": 457.0
+  },
+  {
+   "act": 10584,
+   "name": "Motor Vehicles Act 1988",
+   "n": 4888,
+   "mean": 252.1,
+   "median": 9.0
+  },
+  {
+   "act": 13071,
+   "name": "Police Act, 1960 (Kerala)",
+   "n": 4875,
+   "mean": 296.8,
+   "median": 164.0
+  },
+  {
+   "act": 5985,
+   "name": "Electricity Act",
+   "n": 4489,
+   "mean": 212.6,
+   "median": 10.0
+  },
+  {
+   "act": 4073,
+   "name": "CODE OF CIVIL PROCEDURE, 1908",
+   "n": 4421,
+   "mean": 528.0,
+   "median": 276.0
+  },
+  {
+   "act": 5989,
+   "name": "Electricity Act 2003",
+   "n": 4304,
+   "mean": 825.3,
+   "median": 603.5
+  },
+  {
+   "act": 10565,
+   "name": "Motor Vehicle Act  \\",
+   "n": 4227,
+   "mean": 555.9,
+   "median": 399.0
+  }
+ ]
+}

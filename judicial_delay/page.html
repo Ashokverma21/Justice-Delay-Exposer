@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Judicial Delay Exposer</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2430;--mut:#667085;--line:#e3e6ec;--acc:#1f4e8c;--acc2:#e8eef7;--bad:#b42318;--ok:#067647;--warn:#b54708}
+@media(prefers-color-scheme:dark){:root{--bg:#10151c;--card:#182029;--ink:#e8ecf2;--mut:#9aa6b6;--line:#2a3441;--acc:#6ea8ff;--acc2:#1d2a3d;--bad:#ff8a80;--ok:#4cd9a0;--warn:#ffb86b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+header{padding:18px 16px 0;max-width:1000px;margin:auto}h1{margin:0;font-size:22px}header p{margin:2px 0 12px;color:var(--mut)}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);max-width:1000px;margin:auto;padding:0 16px;overflow-x:auto}
+nav button{background:none;border:0;padding:10px 14px;font:inherit;color:var(--mut);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+nav button.on{color:var(--acc);border-color:var(--acc);font-weight:600}
+main{max-width:1000px;margin:auto;padding:16px}section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+label{display:block;font-size:13px;color:var(--mut);margin-bottom:3px}
+select,input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+button.go{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}
+@media(prefers-color-scheme:dark){button.go{color:#10151c}}
+button.go:disabled{opacity:.5}
+.big{font-size:40px;font-weight:700;line-height:1.1}.mut{color:var(--mut)}.small{font-size:13px}
+.note{background:var(--acc2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:10px}
+.warn{color:var(--warn)}.err{color:var(--bad)}
+.bar{height:16px;background:var(--acc2);border-radius:8px;position:relative;margin:10px 0 4px}
+.bar i{position:absolute;top:0;bottom:0;background:var(--acc);opacity:.35;border-radius:8px}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--acc);border-radius:2px}
+.row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}.row .l{width:150px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .t{flex:1;background:var(--acc2);border-radius:5px;height:16px}.row .t span{display:block;height:100%;background:var(--acc);border-radius:5px}.row .v{width:70px;text-align:right;flex:none}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}
+h2{font-size:17px;margin:0 0 8px}h3{font-size:15px;margin:14px 0 6px}
+</style></head><body>
+<header><h1>Judicial Delay Exposer</h1><p>How long will an Indian lower-court case take? Model trained on 9 lakh DDL cases from 15 states (2010-2018).</p></header>
+<nav id="nav"><button data-t="pred" class="on">Predict a case</button><button data-t="batch">Batch (CSV)</button><button data-t="find">Findings</button><button data-t="about">About / limits</button></nav>
+<main>
+<section id="pred" class="on">
+ <div class="card"><div class="grid">
+  <div><label>State</label><select id="state"></select></div>
+  <div><label>District</label><select id="dist"></select></div>
+  <div><label>Court</label><select id="court"></select></div>
+  <div><label>Filing date</label><input type="date" id="fdate" value="2015-06-01"></div>
+  <div><label>Case type</label><select id="ctype"></select></div>
+  <div><label>Act (optional)</label><select id="act"><option value="">- not known -</option></select></div>
+  <div><label>Bailable? (optional, IPC)</label><select id="bail"><option value="">- not known -</option><option>bailable</option><option>non-bailable</option></select></div>
+  <div><label>Criminal act? (optional)</label><select id="crim"><option value="">- not known -</option><option value="1">Yes</option><option value="0">No</option></select></div>
+  <div><label>Purpose of first hearing (optional)</label><select id="purp"><option value="">- not known -</option></select></div>
+  <div><label>Defendant gender</label><select id="dg"><option>unknown</option><option>male</option><option>female</option></select></div>
+  <div><label>Petitioner gender</label><select id="pg"><option>unknown</option><option>male</option><option>female</option></select></div>
+ </div>
+ <p style="margin:14px 0 0"><button class="go" id="go">Predict duration</button> <span id="perr" class="err small"></span></p>
+ <p class="small mut" id="modehint"></p></div>
+ <div class="card" id="res" style="display:none">
+  <div class="mut small">Predicted time to decision</div><div class="big" id="rdays"></div><div id="rhuman" class="mut"></div>
+  <div class="bar" id="rbar"></div><div class="small mut" id="rrange"></div>
+  <div id="rextra" class="small" style="margin-top:8px"></div><div id="rnotes" class="small warn"></div>
+ </div>
+</section>
+<section id="batch">
+ <div class="card"><h2>Predict many cases at once</h2>
+  <p class="small mut">Upload a cases file in the same format as <code>sample_cases.csv.gz</code> (columns: ddl_case_id, year, state_code, dist_code, court_no, judge_position, female_defendant, female_petitioner, female_adv_def, female_adv_pet, type_name, date_of_filing; <code>purpose_name</code> optional, <code>date_of_decision</code> optional). Optional acts file = <code>sample_acts.csv.gz</code> format.</p>
+  <div class="grid"><div><label>Cases file (.csv / .csv.gz)</label><input type="file" id="bcases"></div><div><label>Acts file (optional)</label><input type="file" id="bacts"></div></div>
+  <p><button class="go" id="bgo">Run predictions and download CSV</button> <span id="bmsg" class="small"></span></p></div>
+</section>
+<section id="find"><div id="fbody" class="mut">Loading...</div></section>
+<section id="about">
+ <div class="card"><h2>What the model can and cannot do</h2>
+ <ul>
+  <li>Trained on cases filed/decided 2010-2018 from 15 states. Dates outside that range, and other states, are not supported.</li>
+  <li>Accuracy on held-out cases: R&sup2; about 0.71 (log scale) from filing-time information only, about 0.75 when the purpose of listing is also known. This is statistically solid on <b>groups</b> of cases; a <b>single</b> case can easily be off by 2-3x (see the range shown).</li>
+  <li>The model has no knowledge of the actual facts of a case, the judge's workload on that day, or adjournments - only court, case type, act, filing date and similar fields.</li>
+  <li>Cases still pending at the end of 2018 are not in the data, so very long durations are under-represented (right-censoring).</li>
+  <li>This is a research / hackathon tool, not legal advice.</li>
+ </ul></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);let META=null;
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button,section').forEach(e=>e.classList.remove('on'));b.classList.add('on');$(b.dataset.t).classList.add('on');if(b.dataset.t==='find')loadFind()});
+function opts(sel,items,fn){sel.innerHTML='';items.forEach((x,i)=>{const o=document.createElement('option');const r=fn(x,i);o.value=r[0];o.textContent=r[1];sel.appendChild(o)})}
+function human(d){if(d<45)return d+' days';if(d<730)return (d/30.4).toFixed(1)+' months';return (d/365).toFixed(1)+' years'}
+const st=()=>META.states.find(s=>s.code==$('state').value), di=()=>st().districts.find(d=>d.code==$('dist').value);
+function fillDist(){opts($('dist'),st().districts,d=>[d.code,'District '+d.code+' ('+d.n.toLocaleString()+' cases)']);fillCourt()}
+function fillCourt(){opts($('court'),di().courts,c=>[c.court_no,'Court '+c.court_no+' - '+c.pos+' ('+c.n.toLocaleString()+')'])}
+fetch('/api/meta').then(r=>r.json()).then(m=>{META=m;
+ opts($('state'),m.states,s=>[s.code,s.name]);$('state').onchange=fillDist;$('dist').onchange=fillCourt;fillDist();
+ opts($('ctype'),m.types,t=>[t.label,t.label+'  ('+t.n.toLocaleString()+')']);
+ m.acts.forEach(a=>{const o=document.createElement('option');o.value=a.code;o.textContent=a.name+' ('+a.n.toLocaleString()+')';$('act').appendChild(o)});
+ m.purposes.forEach(p=>{const o=document.createElement('option');o.value=p.label;o.textContent=p.label+' ('+p.n.toLocaleString()+')';$('purp').appendChild(o)});
+ if(!m.has_purpose_model){$('purp').disabled=true}
+ $('modehint').textContent='Tip: adding the act and (if known) the first-hearing purpose makes the prediction more accurate. Case-type labels are the raw court codes from the DDL data (e.g. "cc", "st", "ba").';
+});
+$('go').onclick=async()=>{$('perr').textContent='';$('go').disabled=true;
+ const body={state:$('state').value,district:$('dist').value,court:$('court').value,filing_date:$('fdate').value,case_type:$('ctype').value,
+  act:$('act').value,bailable:$('bail').value,criminal:$('crim').value,purpose:$('purp').value,def_gender:$('dg').value,pet_gender:$('pg').value};
+ try{const r=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();
+  if(!j.ok){$('perr').textContent=j.error;return}
+  $('res').style.display='block';$('rdays').textContent=j.days.toLocaleString()+' days';$('rhuman').textContent='about '+human(j.days)+' - '+j.bucket;
+  const mx=Math.max(j.hi,j.days)*1.05;$('rbar').innerHTML='<i style="left:'+(j.lo/mx*100)+'%;width:'+((j.hi-j.lo)/mx*100)+'%"></i><b style="left:'+(j.days/mx*100)+'%"></b>';
+  $('rrange').textContent='80% of similar cases fall between '+j.lo.toLocaleString()+' and '+j.hi.toLocaleString()+' days ('+human(j.lo)+' to '+human(j.hi)+')';
+  $('rextra').innerHTML='Court type used: <b>'+j.position+'</b>. Model: <b>'+(j.mode==='with_purpose'?'with hearing purpose':'filing-time only')+'</b>.'+(j.state_median?' Median case in '+j.state+' (all types): <b>'+j.state_median+' days</b>.':'');
+  $('rnotes').innerHTML=j.notes.map(n=>'&bull; '+n).join('<br>');
+ }catch(e){$('perr').textContent=String(e)}finally{$('go').disabled=false}};
+$('bgo').onclick=async()=>{const f=$('bcases').files[0];if(!f){$('bmsg').textContent='Choose a cases file first.';return}
+ const fd=new FormData();fd.append('cases',f);if($('bacts').files[0])fd.append('acts',$('bacts').files[0]);$('bmsg').textContent='Working...';
+ const r=await fetch('/api/batch',{method:'POST',body:fd});
+ if(!r.ok){const j=await r.json();$('bmsg').innerHTML='<span class="err">'+j.error+'</span>';return}
+ const b=await r.blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='predictions.csv';a.click();$('bmsg').textContent='Done - predictions.csv downloaded.'};
+function bars(title,obj,fmt,sort=true){let e=Object.entries(obj);if(sort)e.sort((a,b)=>b[1]-a[1]);const mx=Math.max(...e.map(x=>x[1]),1e-9);
+ return '<div class="card"><h2>'+title+'</h2>'+e.map(([k,v])=>'<div class="row"><div class="l" title="'+k+'">'+k+'</div><div class="t"><span style="width:'+(v/mx*100)+'%"></span></div><div class="v">'+fmt(v)+'</div></div>').join('')+'</div>'}
+let found=false;
+async function loadFind(){if(found)return;const R=await (await fetch('/api/findings')).json();found=true;
+ if(!R.configs){$('fbody').textContent='results.json not found next to app.py - copy it from your results folder.';return}
+ const cf={};Object.entries(R.configs).forEach(([k,v])=>cf[{'A0':'Filing-time','A1':'+ act/section','B0':'+ purpose','B1':'+ purpose + act'}[k.split(' ')[0]]||k]=v.r2_log);
+ let h='<div class="card"><h2>Headline</h2><p>'+R.n_rows.toLocaleString()+' cases, 15 states. Model explains <b>'+(R.configs['B1 + purpose bucket + act/section'].r2_log*100).toFixed(0)+'%</b> of the variation in (log) case duration; for "will it take more than a year?" it is right <b>'+(R.configs['B1 + purpose bucket + act/section'].over_1yr_acc*100).toFixed(0)+'%</b> of the time vs. '+(R.configs['B1 + purpose bucket + act/section'].over_1yr_baseline*100).toFixed(0)+'% for always guessing the majority.</p></div>';
+ h+=bars('Accuracy ladder (R² on log duration, held-out cases)',cf,v=>v.toFixed(3),false);
+ h+=bars('Median days to decision, by state',R.state_median_days,v=>v+' d');
+ h+=bars('Median days by case type',Object.fromEntries(Object.entries(R.type_bucket).map(([k,v])=>[k,v.median])),v=>v+' d');
+ if(R.top_acts)h+='<div class="card"><h2>Biggest acts</h2><table><tr><th>Act</th><th>Cases</th><th>Median days</th></tr>'+R.top_acts.slice(0,10).map(a=>'<tr><td>'+a.name+'</td><td>'+a.n.toLocaleString()+'</td><td>'+a.median+'</td></tr>').join('')+'</table></div>';
+ const v=R.vacancy_calendar180;if(v)h+='<div class="card"><h2>Judge vacancy</h2><p>Cases whose court had no sitting judge during the first 180 days after filing: median <b>'+v.vacancy.median+'</b> days vs <b>'+v.no_vacancy.median+'</b> days otherwise (roster matched for '+R.roster_match_pct+'% of cases).</p></div>';
+ if(R.lok_purpose)h+='<div class="card"><h2>Lok Adalat</h2><p>Cases listed for Lok Adalat: median <b>'+R.lok_purpose.lok.median+'</b> days vs <b>'+R.lok_purpose.other.median+'</b> for the rest - but the effect differs a lot by state.</p></div>';
+ $('fbody').innerHTML=h}
+</script></body></html>
